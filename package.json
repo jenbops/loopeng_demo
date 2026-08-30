@@ -1,0 +1,11 @@
+{
+  "name": "loopeng_demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demonstration of Loop Engineering using a CI/CD pipeline and GitHub Actions",
+  "scripts": {
+    "test": "node --test",
+    "build": "echo \"build ok\"",
+    "lint": "echo \"lint ok\""
+  }
+}
