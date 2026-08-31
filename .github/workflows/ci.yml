@@ -1,0 +1,44 @@
+name: Build, Test, Auto-fix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    outputs:
+      lint_failed: ${{ steps.lint.outcome == 'failure' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - id: lint
+        run: npm run lint
+        continue-on-error: true
+
+      - run: npm test
+
+  auto-fix:
+    needs: build-and-test
+    if: needs.build-and-test.outputs.lint_failed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci && npm run lint -- --fix
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: auto-fix lint"
