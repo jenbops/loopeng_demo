@@ -32,6 +32,8 @@ jobs:
     needs: build-and-test
     if: needs.build-and-test.outputs.lint_failed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
