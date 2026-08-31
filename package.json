@@ -6,6 +6,9 @@
   "scripts": {
     "test": "node --test",
     "build": "echo \"build ok\"",
-    "lint": "echo \"lint ok\""
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^10.9.1"
   }
 }
